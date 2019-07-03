@@ -13,6 +13,13 @@ resources:
     uri: https://github.com/aws/aws-cli.git
     tag_filter: 1.*.*
 
+- name: google-cloud-sdk-repo
+  type: git
+  source:
+    uri: https://github.com/google-cloud-sdk/google-cloud-sdk.git
+    tag_filter: v\d+\.\d+\.\d+
+    private_key: ((github_private_key))
+
 - name: cfops-image
   type: docker-image
   source:
@@ -107,13 +114,6 @@ resources:
   source:
     owner: cloudfoundry
     repository: bosh-cli
-    access_token: ((github_access_token))
-
-- name: google-cloud-sdk-release
-  type: github-release
-  source:
-    owner: google-cloud-sdk
-    repository: google-cloud-sdk
     access_token: ((github_access_token))
 
 - name: cfops-docker-tag
@@ -334,7 +334,7 @@ jobs:
     - get: kubectl-s3-release
       trigger: true
       passed: [get-kubectl]
-    - get: google-cloud-sdk-release
+    - get: google-cloud-sdk-repo
       trigger: true
       params:
         include_source_tarball: true
@@ -357,7 +357,7 @@ jobs:
       - name: credhub-cli-github-release
       - name: certstrap-github-release
       - name: kubectl-s3-release
-      - name: google-cloud-sdk-release
+      - name: google-cloud-sdk-repo
       outputs:
       - name: builddir
       image_resource:
@@ -382,7 +382,7 @@ jobs:
             cp golang-s3-release/go*.linux-amd64.tar.gz builddir/go.tar.gz
             cp aws-cli-s3-release/awscli-bundle.zip builddir/awscli-bundle.zip
             cp kubectl-s3-release/kubectl builddir/kubectl
-            cp google-cloud-sdk-release/*.tar.gz builddir/google-cloud-sdk.tar.gz
+            cp -r google-cloud-sdk-repo builddir/google-cloud-sdk
 
             wget https://storage.googleapis.com/shellcheck/shellcheck-stable.linux.x86_64.tar.xz
             tar xJf shellcheck-stable.linux.x86_64.tar.xz
