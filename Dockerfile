@@ -1,41 +1,65 @@
 FROM alpine:latest
 
-ENV GOPATH /go
-ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
+RUN apk --no-cache add \
+  build-base \
+  bash \
+  curl \
+  python \
+  python-dev \
+  parallel \
+  postgresql-client \
+  ruby \
+  ruby-dev \
+  gnupg \
+  git
 
 # Copy in binaries and make sure they are executable
-COPY terraform cf jq om fly bosh bbl yq credhub certstrap /usr/bin/
+COPY terraform cf jq om fly bosh bbl yq credhub certstrap kubectl shellcheck /usr/bin/
 COPY install_binaries.sh .
 RUN ./install_binaries.sh && rm install_binaries.sh
 
 # Copy in GO and AWS source files
 COPY go.tar.gz awscli-bundle.zip ./
 
+# Set GOPATH environment variable
+ENV GOPATH /go
+
+# Add GOPATH/bin to the PATH
+ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
+
 # Unpack and install GO
 RUN tar -C /usr/local -xzf go.tar.gz \
   && rm go.tar.gz \
   && mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
 
+# Unpack and install Google Cloud SDK
+RUN mkdir -p /usr/local/gcloud \
+  && tar -C /usr/local/gcloud -xvf /tmp/google-cloud-sdk.tar.gz \
+  && /usr/local/gcloud/google-cloud-sdk/install.sh
+
+# Adding the Google Cloud SDK package path to PATH
+ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
+
 # Configure sources list so that apt-get can find the gcp SDK
-RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"  \
-  && echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list  \
-  && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
-  && cat /etc/apt/sources.list.d/google-cloud-sdk.list
+# RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"  \
+#   && echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list  \
+#   && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
+#   && cat /etc/apt/sources.list.d/google-cloud-sdk.list
 
 # Install tooling from ubuntu packages
-RUN apt-get update && apt-get install -y --no-install-recommends \
-  python-dev \
-  parallel \
-  postgresql \
-  ruby-dev \
-  gnupg2 \
-  shellcheck \
-  google-cloud-sdk \
-  kubectl \
-  && rm -rf /var/lib/apt/lists/*
+# RUN apt-get update && apt-get install -y --no-install-recommends \
+#   python-dev \
+#   parallel \
+#   postgresql \
+#   ruby-dev \
+#   gnupg2 \
+#   shellcheck \
+#   google-cloud-sdk \
+#   kubectl \
+#   && rm -rf /var/lib/apt/lists/*
 
 # Symlinks required by postgres
-RUN ln -s /usr/lib/postgresql/*/bin/initdb /usr/bin/initdb && ln -s /usr/lib/postgresql/*/bin/postgres /usr/bin/postgres
+# RUN ln -s /usr/lib/postgresql/*/bin/initdb /usr/bin/initdb && ln -s /usr/lib/postgresql/*/bin/postgres /usr/bin/postgres
 
 # Install AWS CLI
 RUN unzip awscli-bundle.zip \

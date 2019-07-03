@@ -16,6 +16,7 @@ command -v \
   gometalinter \
   gpg \
   jq \
+  kubectl \
   om \
   parallel \
   python \

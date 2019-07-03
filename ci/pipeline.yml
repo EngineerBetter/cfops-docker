@@ -109,6 +109,13 @@ resources:
     repository: bosh-cli
     access_token: ((github_access_token))
 
+- name: google-cloud-sdk-release
+  type: github-release
+  source:
+    owner: google-cloud-sdk
+    repository: google-cloud-sdk
+    access_token: ((github_access_token))
+
 - name: cfops-docker-tag
   type: semver
   source:
@@ -292,7 +299,7 @@ jobs:
     - get: om-github-release
       trigger: true
       params:
-        globs: [om-linux]
+        globs: [om-linux-*.tar.gz]
     - get: concourse-github-release
       trigger: true
       params:
@@ -327,6 +334,10 @@ jobs:
     - get: kubectl-s3-release
       trigger: true
       passed: [get-kubectl]
+    - get: google-cloud-sdk-release
+      trigger: true
+      params:
+        include_source_tarball: true
   # Copy dependencies
   - task: copy
     config:
@@ -346,6 +357,7 @@ jobs:
       - name: credhub-cli-github-release
       - name: certstrap-github-release
       - name: kubectl-s3-release
+      - name: google-cloud-sdk-release
       outputs:
       - name: builddir
       image_resource:
@@ -360,16 +372,22 @@ jobs:
             cp terraform-s3-release/terraform builddir/terraform
             cp cf-cli-s3-release/cf builddir/cf
             cp jq-github-release/jq-linux64 builddir/jq
-            cp om-github-release/om-linux builddir/om
+            tar xzf om-github-release/om-linux-*.tar.gz -C builddir
             tar xzf concourse-github-release/fly-*-linux-amd64.tgz -C builddir/
+            tar xzf credhub-cli-github-release/credhub-linux-*.tgz -C builddir
             cp bosh-cli-release/bosh-cli-*-linux-amd64 builddir/bosh
             cp bbl-github-release/bbl-v*_linux_x86-64 builddir/bbl
             cp yq-github-release/yq_linux_amd64 builddir/yq
             cp certstrap-github-release/certstrap-v*-linux-amd64 builddir/certstrap
             cp golang-s3-release/go*.linux-amd64.tar.gz builddir/go.tar.gz
             cp aws-cli-s3-release/awscli-bundle.zip builddir/awscli-bundle.zip
-            tar -C builddir -xzf credhub-cli-github-release/credhub-linux-*.tgz
             cp kubectl-s3-release/kubectl builddir/kubectl
+            cp google-cloud-sdk-release/*.tar.gz builddir/google-cloud-sdk.tar.gz
+
+            wget https://storage.googleapis.com/shellcheck/shellcheck-stable.linux.x86_64.tar.xz
+            tar xJf shellcheck-stable.linux.x86_64.tar.xz
+            cp shellcheck-stable/shellcheck builddir/
+
   - put: cfops-image
     params:
       build: builddir
