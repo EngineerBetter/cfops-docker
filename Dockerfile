@@ -13,6 +13,9 @@ RUN apk --no-cache add \
   gnupg \
   git
 
+# GO binaries don't work on alpine without this
+RUN mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
+
 # Copy in binaries and make sure they are executable
 COPY terraform cf jq om fly bosh bbl yq credhub certstrap kubectl shellcheck /usr/bin/
 COPY install_binaries.sh .

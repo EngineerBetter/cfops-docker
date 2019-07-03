@@ -6,7 +6,5 @@ for name in "${names[@]}"
 do
   chmod +x /usr/bin/$name
   sync # docker bug requires this
-  stat /usr/bin/$name
-  echo $name
   $name --version
 done
