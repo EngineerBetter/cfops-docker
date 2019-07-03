@@ -17,7 +17,7 @@ resources:
   type: git
   source:
     uri: https://github.com/google-cloud-sdk/google-cloud-sdk.git
-    tag_filter: v\d+\.\d+\.\d+
+    tag_filter: v*.*.*
     private_key: ((github_private_key))
 
 - name: cfops-image
@@ -336,8 +336,6 @@ jobs:
       passed: [get-kubectl]
     - get: google-cloud-sdk-repo
       trigger: true
-      params:
-        include_source_tarball: true
   # Copy dependencies
   - task: copy
     config:
