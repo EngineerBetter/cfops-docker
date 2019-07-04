@@ -38,7 +38,7 @@ RUN tar -C /usr/local -xzf go.tar.gz \
 # Install Google Cloud SDK
 COPY google-cloud-sdk /usr/local/google-cloud-sdk
 
-RUN /usr/local/google-cloud-sdk/install.sh
+RUN /usr/local/google-cloud-sdk/install.sh --quiet
 
 # Adding the Google Cloud SDK package path to PATH
 ENV PATH $PATH:/usr/local/google-cloud-sdk/bin
