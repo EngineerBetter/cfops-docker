@@ -36,12 +36,10 @@ RUN tar -C /usr/local -xzf go.tar.gz \
   && mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
 
 # Install Google Cloud SDK
-COPY google-cloud-sdk /usr/local/google-cloud-sdk
-
-RUN /usr/local/google-cloud-sdk/install.sh --quiet
+RUN curl -sSL https://sdk.cloud.google.com | bash
 
 # Adding the Google Cloud SDK package path to PATH
-ENV PATH $PATH:/usr/local/google-cloud-sdk/bin
+ENV PATH $PATH:/root/google-cloud-sdk/bin
 
 # Install AWS CLI
 RUN unzip awscli-bundle.zip \

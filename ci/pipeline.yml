@@ -355,7 +355,6 @@ jobs:
       - name: credhub-cli-github-release
       - name: certstrap-github-release
       - name: kubectl-s3-release
-      - name: google-cloud-sdk-repo
       outputs:
       - name: builddir
       image_resource:
@@ -380,7 +379,6 @@ jobs:
             cp golang-s3-release/go*.linux-amd64.tar.gz builddir/go.tar.gz
             cp aws-cli-s3-release/awscli-bundle.zip builddir/awscli-bundle.zip
             cp kubectl-s3-release/kubectl builddir/kubectl
-            cp -r google-cloud-sdk-repo builddir/google-cloud-sdk
 
             wget https://storage.googleapis.com/shellcheck/shellcheck-stable.linux.x86_64.tar.xz
             tar xJf shellcheck-stable.linux.x86_64.tar.xz
