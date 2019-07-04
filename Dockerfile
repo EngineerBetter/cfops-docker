@@ -36,9 +36,11 @@ RUN tar -C /usr/local -xzf go.tar.gz \
   && mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
 
 # Unpack and install Google Cloud SDK
-RUN mkdir -p /usr/local/gcloud \
-  && cp -r google-cloud-sdk /usr/local/gcloud/ \
-  && /usr/local/gcloud/google-cloud-sdk/install.sh
+RUN mkdir -p /usr/local/gcloud
+
+COPY google-cloud-sdk /usr/local/gcloud/
+
+RUN /usr/local/gcloud/google-cloud-sdk/install.sh
 
 # Adding the Google Cloud SDK package path to PATH
 ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
