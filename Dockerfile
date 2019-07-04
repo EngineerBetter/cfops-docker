@@ -37,32 +37,11 @@ RUN tar -C /usr/local -xzf go.tar.gz \
 
 # Unpack and install Google Cloud SDK
 RUN mkdir -p /usr/local/gcloud \
-  && mv google-cloud-sdk/* /usr/local/gcloud/ \
+  && cp -r google-cloud-sdk /usr/local/gcloud/ \
   && /usr/local/gcloud/google-cloud-sdk/install.sh
 
 # Adding the Google Cloud SDK package path to PATH
 ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
-
-# Configure sources list so that apt-get can find the gcp SDK
-# RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"  \
-#   && echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list  \
-#   && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
-#   && cat /etc/apt/sources.list.d/google-cloud-sdk.list
-
-# Install tooling from ubuntu packages
-# RUN apt-get update && apt-get install -y --no-install-recommends \
-#   python-dev \
-#   parallel \
-#   postgresql \
-#   ruby-dev \
-#   gnupg2 \
-#   shellcheck \
-#   google-cloud-sdk \
-#   kubectl \
-#   && rm -rf /var/lib/apt/lists/*
-
-# Symlinks required by postgres
-# RUN ln -s /usr/lib/postgresql/*/bin/initdb /usr/bin/initdb && ln -s /usr/lib/postgresql/*/bin/postgres /usr/bin/postgres
 
 # Install AWS CLI
 RUN unzip awscli-bundle.zip \
