@@ -30,7 +30,8 @@ resources:
 - name: base-image
   type: docker-image
   source:
-    repository: alpine
+    repository: python
+    tag: alpine
 
 - name: terraform-github-release
   type: github-release

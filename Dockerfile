@@ -14,21 +14,18 @@ RUN go get github.com/onsi/ginkgo/ginkgo \
 RUN mv /go/bin/gometalinter.v2 /go/bin/gometalinter && \
   gometalinter --install
 
-FROM alpine:latest
+FROM python:alpine
 
-COPY --from=go /go/bin/ /usr/local/bin/
+COPY --from=go /go/bin/ /usr/bin/
 
 RUN apk --no-cache add \
   build-base \
   bash \
   curl \
-  python \
-  python-dev \
   parallel \
   postgresql-client \
   ruby \
   ruby-dev \
-  gnupg \
   git
 
 # GO binaries don't work on alpine without this
@@ -39,14 +36,14 @@ COPY terraform cf jq om fly bosh bbl yq credhub certstrap kubectl shellcheck /us
 COPY install_binaries.sh .
 RUN ./install_binaries.sh && rm install_binaries.sh
 
-# Copy in AWS source files
-COPY awscli-bundle.zip ./
-
 # Install Google Cloud SDK
 RUN curl -sSL https://sdk.cloud.google.com | bash
 
 # Adding the Google Cloud SDK package path to PATH
 ENV PATH $PATH:/root/google-cloud-sdk/bin
+
+# Copy in AWS source files
+COPY awscli-bundle.zip ./
 
 # Install AWS CLI
 RUN unzip awscli-bundle.zip \
