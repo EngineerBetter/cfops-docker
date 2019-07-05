@@ -4,14 +4,17 @@ set -eux
 
 command -v \
   aws \
+  bash \
   bbl \
   bosh \
   certstrap \
   cf \
   credhub \
+  curl \
   fly \
   gcloud \
   ginkgo \
+  git \
   gometalinter \
   jq \
   kubectl \
