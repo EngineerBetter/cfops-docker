@@ -14,19 +14,21 @@ RUN go get github.com/onsi/ginkgo/ginkgo \
 RUN mv /go/bin/gometalinter.v2 /go/bin/gometalinter && \
   gometalinter --install
 
-FROM python:alpine
+FROM alpine:latest
 
 COPY --from=go /go/bin/ /usr/bin/
 
 RUN apk --no-cache add \
-  build-base \
   bash \
+  build-base \
   curl \
+  git \
   parallel \
   postgresql-client \
+  python \
+  python-dev \
   ruby \
-  ruby-dev \
-  git
+  ruby-dev
 
 # GO binaries don't work on alpine without this
 RUN mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
