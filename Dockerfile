@@ -1,4 +1,22 @@
+FROM golang:latest as go
+
+RUN go get github.com/onsi/ginkgo/ginkgo \
+  github.com/onsi/gomega \
+  gopkg.in/alecthomas/gometalinter.v2 \
+  github.com/krishicks/yaml-patch/cmd/yaml-patch \
+  github.com/EngineerBetter/yml2env \
+  gopkg.in/EngineerBetter/stopover.v2 \
+  gopkg.in/EngineerBetter/stopover.v1 \
+  github.com/santhosh-tekuri/jsonschema/cmd/jv \
+  && mv /go/bin/stopover.v1 /go/bin/stopover
+
+# Install gometalinter
+RUN mv /go/bin/gometalinter.v2 /go/bin/gometalinter && \
+  gometalinter --install
+
 FROM alpine:latest
+
+COPY --from=go /go/bin/ /usr/local/bin/
 
 RUN apk --no-cache add \
   build-base \
@@ -21,19 +39,8 @@ COPY terraform cf jq om fly bosh bbl yq credhub certstrap kubectl shellcheck /us
 COPY install_binaries.sh .
 RUN ./install_binaries.sh && rm install_binaries.sh
 
-# Copy in GO and AWS source files
-COPY go.tar.gz awscli-bundle.zip ./
-
-# Set GOPATH environment variable
-ENV GOPATH /go
-
-# Add GOPATH/bin to the PATH
-ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
-
-# Unpack and install GO
-RUN tar -C /usr/local -xzf go.tar.gz \
-  && rm go.tar.gz \
-  && mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
+# Copy in AWS source files
+COPY awscli-bundle.zip ./
 
 # Install Google Cloud SDK
 RUN curl -sSL https://sdk.cloud.google.com | bash
@@ -47,20 +54,6 @@ RUN unzip awscli-bundle.zip \
   && ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws \
   && rm -r awscli-bundle \
   && aws --version
-
-RUN go get github.com/onsi/ginkgo/ginkgo \
-  github.com/onsi/gomega \
-  gopkg.in/alecthomas/gometalinter.v2 \
-  github.com/krishicks/yaml-patch/cmd/yaml-patch \
-  github.com/EngineerBetter/yml2env \
-  gopkg.in/EngineerBetter/stopover.v2 \
-  gopkg.in/EngineerBetter/stopover.v1 \
-  github.com/santhosh-tekuri/jsonschema/cmd/jv \
-  && mv /go/bin/stopover.v1 /go/bin/stopover
-
-# Install gometalinter
-RUN mv /go/bin/gometalinter.v2 /go/bin/gometalinter && \
-  gometalinter --install
 
 # Install uaac
 RUN gem install --no-document --no-update-sources --verbose cf-uaac \

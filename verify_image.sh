@@ -12,7 +12,6 @@ command -v \
   fly \
   gcloud \
   ginkgo \
-  go \
   gometalinter \
   gpg \
   jq \
