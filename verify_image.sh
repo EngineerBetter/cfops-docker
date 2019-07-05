@@ -13,7 +13,6 @@ command -v \
   gcloud \
   ginkgo \
   gometalinter \
-  gpg \
   jq \
   kubectl \
   om \
