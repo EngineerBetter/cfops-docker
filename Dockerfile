@@ -25,11 +25,11 @@ COPY terraform cf jq om fly bosh bbl yq credhub certstrap kubectl shellcheck /us
 COPY install_binaries.sh build_image.sh awscli-bundle.zip ./
 
 # Install everything
-RUN build_image.sh && rm build_image.sh
+RUN ./build_image.sh && rm ./build_image.sh
 
 # Adding the Google Cloud SDK package path to PATH
 ENV PATH $PATH:/root/google-cloud-sdk/bin
 
 # Copy in image verification script
 COPY verify_image.sh verify_image.sh
-RUN verify_image.sh && rm verify_image.sh
+RUN ./verify_image.sh && rm ./verify_image.sh
