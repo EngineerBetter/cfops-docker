@@ -30,5 +30,5 @@ unzip awscli-bundle.zip \
   && aws --version
 
 # Install uaac
-gem install --no-document --no-update-sources --verbose cf-uaac \
+RUN gem install --no-document --no-update-sources --verbose cf-uaac \
   && rm -rf /usr/lib/ruby/gems/2.5.0/cache/
