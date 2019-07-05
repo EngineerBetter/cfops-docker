@@ -153,7 +153,7 @@ resources:
 
 jobs:
 - name: get-kubectl
-  # public: true
+  public: true
   serial: true
   plan:
   - get: kubernetes-github-release
@@ -183,7 +183,7 @@ jobs:
     params: {file: kubectl/kubectl}
 
 - name: get-terraform
-  # public: true
+  public: true
   serial: true
   plan:
   - get: terraform-github-release
@@ -212,7 +212,7 @@ jobs:
     params: {file: terraform/terraform}
 
 - name: get-cf-cli
-  # public: true
+  public: true
   serial: true
   plan:
   - get: cf-cli-github-release
@@ -241,7 +241,7 @@ jobs:
     params: {file: cf/cf}
 
 - name: get-aws-cli
-  # public: true
+  public: true
   serial: true
   plan:
   - get: aws-cli-git
@@ -266,7 +266,7 @@ jobs:
     params: {file: aws-cli/awscli-bundle.zip}
 
 - name: build-cfops-image
-  # public: true
+  public: true
   serial: true
   plan:
   - in_parallel:
