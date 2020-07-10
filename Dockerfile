@@ -21,8 +21,8 @@ RUN apk --no-cache add \
   curl \
   git \
   parallel \
-  python \
-  python-dev \
+  python3 \
+  python3-dev \
   ruby \
   ruby-dev
 
