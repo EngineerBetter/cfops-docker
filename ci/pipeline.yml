@@ -116,6 +116,7 @@ resources:
     owner: koalaman
     repository: shellcheck
     access_token: ((github_access_token))
+    tag_filter: v0\.\d+\.\d+
 
 - name: cfops-docker-tag
   type: semver
