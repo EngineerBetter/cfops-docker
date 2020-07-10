@@ -13,13 +13,6 @@ resources:
     uri: https://github.com/aws/aws-cli.git
     tag_filter: 1.*.*
 
-- name: google-cloud-sdk-repo
-  type: git
-  source:
-    uri: https://github.com/google-cloud-sdk/google-cloud-sdk.git
-    tag_filter: v*.*.*
-    private_key: ((github_private_key))
-
 - name: cfops-image
   type: docker-image
   source:
@@ -336,8 +329,6 @@ jobs:
     - get: kubectl-s3-release
       trigger: true
       passed: [get-kubectl]
-    - get: google-cloud-sdk-repo
-      trigger: true
   # Copy dependencies
   - task: copy
     config:

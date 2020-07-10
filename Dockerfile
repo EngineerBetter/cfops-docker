@@ -7,11 +7,9 @@ RUN go get github.com/onsi/ginkgo/ginkgo \
   github.com/EngineerBetter/yml2env \
   gopkg.in/EngineerBetter/stopover.v2 \
   gopkg.in/EngineerBetter/stopover.v1 \
-  && mv /go/bin/stopover.v1 /go/bin/stopover
-
-# Install gometalinter
-RUN mv /go/bin/gometalinter.v2 /go/bin/gometalinter && \
-  gometalinter --install
+  && mv /go/bin/stopover.v1 /go/bin/stopover \
+  && mv /go/bin/gometalinter.v2 /go/bin/gometalinter \
+  && gometalinter --install
 
 FROM alpine:latest
 

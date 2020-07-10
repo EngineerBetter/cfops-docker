@@ -4,20 +4,18 @@ set -eux
 
 command -v \
   aws \
-  bash \
   bbl \
   bosh \
   certstrap \
   cf \
   credhub \
-  curl \
   fly \
   gcloud \
   ginkgo \
-  git \
+  go \
   gometalinter \
+  gpg \
   jq \
-  kubectl \
   om \
   parallel \
   python \
@@ -28,5 +26,9 @@ command -v \
   terraform \
   uaac \
   yaml-patch \
+  yaml2json \
   yml2env \
-  yq
+  yq \
+  bbr
+
+echo "GOPATH is $GOPATH"
