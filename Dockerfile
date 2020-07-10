@@ -24,10 +24,8 @@ RUN apk --no-cache add \
   python3 \
   python3-dev \
   ruby \
-  ruby-dev
-
-# GO binaries don't work on alpine without this
-RUN mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
+  ruby-dev \
+  && mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
 
 # Copy in binaries and make sure they are executable
 COPY terraform cf jq om fly bosh bbl yq credhub certstrap kubectl shellcheck /usr/bin/
@@ -48,10 +46,8 @@ RUN unzip awscli-bundle.zip \
   && rm awscli-bundle.zip \
   && ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws \
   && rm -r awscli-bundle \
-  && aws --version
-
-# Install uaac
-RUN gem install --no-document --no-update-sources --verbose cf-uaac \
+  && aws --version \
+  && gem install --no-document --no-update-sources --verbose cf-uaac \
   && rm -rf /usr/lib/ruby/gems/2.5.0/cache/
 
 COPY verify_image.sh /tmp/verify_image.sh
