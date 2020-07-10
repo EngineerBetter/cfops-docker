@@ -383,12 +383,13 @@ jobs:
             cp certstrap-github-release/certstrap-*-linux-amd64 builddir/certstrap
             cp aws-cli-s3-release/awscli-bundle.zip builddir/awscli-bundle.zip
             cp kubectl-s3-release/kubectl builddir/kubectl
-            tar xJf shellcheck-release/shellcheck-v*.linux.x86_64.tar.xz -C builddir/
+            tar xJf shellcheck-release/shellcheck-v*.linux.x86_64.tar.xz
+            mv shellcheck-*/shellcheck builddir/
 
   - put: cfops-image
     params:
       build: builddir
-      tag: cfops-docker-tag/version
+      tag_file: cfops-docker-tag/version
       tag_as_latest: true
   - put: cfops-github
     params:
