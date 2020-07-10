@@ -367,7 +367,7 @@ jobs:
             cp bosh-cli-release/bosh-cli-*-linux-amd64 builddir/bosh
             cp bbl-github-release/bbl-v*_linux_x86-64 builddir/bbl
             cp yq-github-release/yq_linux_amd64 builddir/yq
-            cp certstrap-github-release/certstrap-v*-linux-amd64 builddir/certstrap
+            cp certstrap-github-release/certstrap-*-linux-amd64 builddir/certstrap
             cp aws-cli-s3-release/awscli-bundle.zip builddir/awscli-bundle.zip
             cp kubectl-s3-release/kubectl builddir/kubectl
 
