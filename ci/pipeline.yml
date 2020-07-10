@@ -325,7 +325,7 @@ jobs:
     - get: certstrap-github-release
       trigger: true
       params:
-        globs: [certstrap-v*-linux-amd64]
+        globs: [certstrap-*-linux-amd64]
     - get: kubectl-s3-release
       trigger: true
       passed: [get-kubectl]
