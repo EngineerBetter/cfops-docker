@@ -153,6 +153,14 @@ resources:
     <<: *aws_creds
 
 jobs:
+- name: set-pipeline
+  serial: true
+  plan:
+  - get: cfops-github
+    trigger: true
+  - set_pipeline: cfops-docker
+    file: cfops-github/ci/pipeline.yml
+
 - name: get-kubectl
   public: true
   serial: true
@@ -275,6 +283,8 @@ jobs:
       params: {bump: minor}
     # Download Dockerfile
     - get: cfops-github
+      passed:
+      - set-pipeline
       trigger: true
     # Trigger on base image updates
     - get: base-image
