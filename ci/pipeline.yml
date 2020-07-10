@@ -110,6 +110,13 @@ resources:
     repository: bosh-cli
     access_token: ((github_access_token))
 
+- name: shellcheck-release
+  type: github-release
+  source:
+    owner: koalaman
+    repository: shellcheck
+    access_token: ((github_access_token))
+
 - name: cfops-docker-tag
   type: semver
   source:
@@ -329,6 +336,10 @@ jobs:
     - get: kubectl-s3-release
       trigger: true
       passed: [get-kubectl]
+    - get: shellcheck-release
+      trigger: true
+      params:
+        globs: [shellcheck-v*.linux.x86_64.tar.xz]
   # Copy dependencies
   - task: copy
     config:
@@ -347,6 +358,7 @@ jobs:
       - name: credhub-cli-github-release
       - name: certstrap-github-release
       - name: kubectl-s3-release
+      - name: shellcheck-release
       outputs:
       - name: builddir
       image_resource:
@@ -370,10 +382,7 @@ jobs:
             cp certstrap-github-release/certstrap-*-linux-amd64 builddir/certstrap
             cp aws-cli-s3-release/awscli-bundle.zip builddir/awscli-bundle.zip
             cp kubectl-s3-release/kubectl builddir/kubectl
-
-            wget https://storage.googleapis.com/shellcheck/shellcheck-stable.linux.x86_64.tar.xz
-            tar xJf shellcheck-stable.linux.x86_64.tar.xz
-            cp shellcheck-stable/shellcheck builddir/
+            tar xJf shellcheck-release/shellcheck-v*.linux.x86_64.tar.xz -C builddir/
 
   - put: cfops-image
     params:
