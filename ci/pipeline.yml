@@ -2,6 +2,7 @@
 resources:
 - name: cfops-github
   type: git
+  icon: github
   source:
     uri: git@github.com:EngineerBetter/cfops-docker.git
     branch: master
@@ -9,6 +10,7 @@ resources:
 
 - name: cfops-image
   type: docker-image
+  icon: docker
   source:
     username: ((dockerhub_user))
     password: ((dockerhub_password))
@@ -16,21 +18,25 @@ resources:
 
 - name: base-image
   type: registry-image
+  icon: docker
   source:
     repository: alpine
 
 - name: go-image
   type: registry-image
+  icon: docker
   source:
     repository: golang
 
 - name: aws-image
   type: registry-image
+  icon: docker
   source:
     repository: amazon/aws-cli
 
 - name: terraform-github-release
   type: github-release
+  icon: github
   source:
     owner: hashicorp
     repository: terraform
@@ -38,6 +44,7 @@ resources:
 
 - name: cf-cli-github-release
   type: github-release
+  icon: github
   source:
     owner: cloudfoundry
     repository: cli
@@ -46,6 +53,7 @@ resources:
 
 - name: jq-github-release
   type: github-release
+  icon: github
   source:
     owner: stedolan
     repository: jq
@@ -53,6 +61,7 @@ resources:
 
 - name: om-github-release
   type: github-release
+  icon: github
   source:
     owner: pivotal-cf
     repository: om
@@ -60,6 +69,7 @@ resources:
 
 - name: concourse-github-release
   type: github-release
+  icon: github
   source:
     owner: concourse
     repository: concourse
@@ -67,6 +77,7 @@ resources:
 
 - name: bbl-github-release
   type: github-release
+  icon: github
   source:
     owner: cloudfoundry
     repository: bosh-bootloader
@@ -74,6 +85,7 @@ resources:
 
 - name: yq-github-release
   type: github-release
+  icon: github
   source:
     owner: mikefarah
     repository: yq
@@ -81,6 +93,7 @@ resources:
 
 - name: cf-uaac-github-release
   type: github-release
+  icon: github
   source:
     owner: cloudfoundry
     repository: cf-uaac
@@ -88,6 +101,7 @@ resources:
 
 - name: credhub-cli-github-release
   type: github-release
+  icon: github
   source:
     owner: cloudfoundry-incubator
     repository: credhub-cli
@@ -95,6 +109,7 @@ resources:
 
 - name: certstrap-github-release
   type: github-release
+  icon: github
   source:
     owner: square
     repository: certstrap
@@ -102,6 +117,7 @@ resources:
 
 - name: kubernetes-github-release
   type: github-release
+  icon: github
   source:
     owner: kubernetes
     repository: kubernetes
@@ -109,6 +125,7 @@ resources:
 
 - name: bosh-cli-release
   type: github-release
+  icon: github
   source:
     owner: cloudfoundry
     repository: bosh-cli
@@ -116,6 +133,7 @@ resources:
 
 - name: shellcheck-release
   type: github-release
+  icon: github
   source:
     owner: koalaman
     repository: shellcheck
@@ -124,6 +142,7 @@ resources:
 
 - name: cfops-docker-tag
   type: semver
+  icon: file
   source:
     driver: s3
     key: docker-tag
