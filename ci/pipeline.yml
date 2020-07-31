@@ -7,12 +7,6 @@ resources:
     branch: master
     private_key: ((github_private_key))
 
-- name: aws-cli-git
-  type: git
-  source:
-    uri: https://github.com/aws/aws-cli.git
-    tag_filter: 1.*.*
-
 - name: cfops-image
   type: docker-image
   source:
@@ -21,9 +15,19 @@ resources:
     repository: engineerbetter/cf-ops
 
 - name: base-image
-  type: docker-image
+  type: registry-image
   source:
     repository: alpine
+
+- name: go-image
+  type: registry-image
+  source:
+    repository: golang
+
+- name: aws-image
+  type: registry-image
+  source:
+    repository: amazon/aws-cli
 
 - name: terraform-github-release
   type: github-release
@@ -250,31 +254,6 @@ jobs:
   - put: cf-cli-s3-release
     params: {file: cf/cf}
 
-- name: get-aws-cli
-  public: true
-  serial: true
-  plan:
-  - get: aws-cli-git
-    trigger: true
-  - task: download
-    config:
-      platform: linux
-      outputs:
-      - name: aws-cli
-      image_resource:
-        type: docker-image
-        source: {repository: busybox}
-      run:
-        path: ash
-        args:
-        - -c
-        - |
-          set -euo pipefail
-          url="https://s3.amazonaws.com/aws-cli/awscli-bundle.zip"
-          wget -O aws-cli/awscli-bundle.zip "$url"
-  - put: aws-cli-s3-release
-    params: {file: aws-cli/awscli-bundle.zip}
-
 - name: build-cfops-image
   public: true
   serial: true
@@ -290,6 +269,14 @@ jobs:
     # Trigger on base image updates
     - get: base-image
       trigger: true
+    - get: go-image
+      trigger: true
+      params:
+        skip_download: true
+    - get: aws-image
+      trigger: true
+      params:
+        skip_download: true
     # Download dependancies
     - get: terraform-s3-release
       trigger: true
@@ -381,7 +368,6 @@ jobs:
             cp bbl-github-release/bbl-v*_linux_x86-64 builddir/bbl
             cp yq-github-release/yq_linux_amd64 builddir/yq
             cp certstrap-github-release/certstrap-*-linux-amd64 builddir/certstrap
-            cp aws-cli-s3-release/awscli-bundle.zip builddir/awscli-bundle.zip
             cp kubectl-s3-release/kubectl builddir/kubectl
             tar xJf shellcheck-release/shellcheck-v*.linux.x86_64.tar.xz
             mv shellcheck-*/shellcheck builddir/

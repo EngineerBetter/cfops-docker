@@ -11,9 +11,13 @@ RUN go get github.com/onsi/ginkgo/ginkgo \
   && mv /go/bin/gometalinter.v2 /go/bin/gometalinter \
   && gometalinter --install
 
+FROM amazon/aws-cli:latest as aws
+
 FROM alpine:latest
 
 COPY --from=go /go/bin/ /usr/bin/
+
+COPY --from=aws /usr/local/bin/aws /usr/bin/aws
 
 RUN apk --no-cache add \
   bash \
@@ -37,18 +41,6 @@ RUN curl -sSL https://sdk.cloud.google.com | bash
 
 # Adding the Google Cloud SDK package path to PATH
 ENV PATH $PATH:/root/google-cloud-sdk/bin
-
-# Copy in AWS source files
-COPY awscli-bundle.zip ./
-
-# Install AWS CLI
-RUN unzip awscli-bundle.zip \
-  && rm awscli-bundle.zip \
-  && ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws \
-  && rm -r awscli-bundle \
-  && aws --version \
-  && gem install --no-document --no-update-sources --verbose cf-uaac \
-  && rm -rf /usr/lib/ruby/gems/2.5.0/cache/
 
 COPY verify_image.sh /tmp/verify_image.sh
 RUN /tmp/verify_image.sh && rm /tmp/verify_image.sh
