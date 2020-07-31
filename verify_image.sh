@@ -30,5 +30,3 @@ command -v \
   yml2env \
   yq \
   bbr
-
-echo "GOPATH is $GOPATH"
