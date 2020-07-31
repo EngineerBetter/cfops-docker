@@ -29,15 +29,13 @@ RUN apk --no-cache add \
   python3-dev \
   ruby \
   ruby-dev \
-  && mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
+  && mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2 \
+  && curl -sSL https://sdk.cloud.google.com | bash
 
 # Copy in binaries and make sure they are executable
 COPY terraform cf jq om fly bosh bbl yq credhub certstrap kubectl shellcheck /usr/bin/
 COPY install_binaries.sh .
 RUN ./install_binaries.sh && rm install_binaries.sh
-
-# Install Google Cloud SDK
-RUN curl -sSL https://sdk.cloud.google.com | bash
 
 # Adding the Google Cloud SDK package path to PATH
 ENV PATH $PATH:/root/google-cloud-sdk/bin
