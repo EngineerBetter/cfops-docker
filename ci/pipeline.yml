@@ -154,26 +154,23 @@ resources:
 
 - name: terraform-s3-release
   type: s3
+  icon: aws
   source:
     versioned_file: terraform/terraform
     <<: *aws_creds
 
 - name: cf-cli-s3-release
   type: s3
+  icon: aws
   source:
     versioned_file: cf/cf
     <<: *aws_creds
 
 - name: kubectl-s3-release
   type: s3
+  icon: aws
   source:
     versioned_file: kubectl/kubectl
-    <<: *aws_creds
-
-- name: aws-cli-s3-release
-  type: s3
-  source:
-    versioned_file: aws-cli/awscli-bundle.zip
     <<: *aws_creds
 
 jobs:
@@ -327,9 +324,6 @@ jobs:
       trigger: true
       params:
         globs: [yq_linux_amd64]
-    - get: aws-cli-s3-release
-      trigger: true
-      passed: [get-aws-cli]
     - get: cf-uaac-github-release
       trigger: true
     - get: credhub-cli-github-release
@@ -361,7 +355,6 @@ jobs:
       - name: bosh-cli-release
       - name: bbl-github-release
       - name: yq-github-release
-      - name: aws-cli-s3-release
       - name: credhub-cli-github-release
       - name: certstrap-github-release
       - name: kubectl-s3-release
