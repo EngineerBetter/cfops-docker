@@ -23,6 +23,7 @@ RUN apk --no-cache add \
   bash \
   build-base \
   curl \
+  fd \
   git \
   parallel \
   python3 \
