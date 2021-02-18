@@ -5,11 +5,14 @@ RUN go get github.com/onsi/ginkgo/ginkgo \
   gopkg.in/alecthomas/gometalinter.v2 \
   github.com/krishicks/yaml-patch/cmd/yaml-patch \
   github.com/EngineerBetter/yml2env \
-  gopkg.in/EngineerBetter/stopover.v2 \
-  gopkg.in/EngineerBetter/stopover.v1 \
-  && mv /go/bin/stopover.v1 /go/bin/stopover \
   && mv /go/bin/gometalinter.v2 /go/bin/gometalinter \
   && gometalinter --install
+
+# Stopover doesn't have go modules and it's dependencies don't seem
+# to work with go mod tidy
+RUN GO111MODULE=auto go get gopkg.in/EngineerBetter/stopover.v2 \
+  gopkg.in/EngineerBetter/stopover.v1 \
+  && mv /go/bin/stopover.v1 /go/bin/stopover
 
 FROM amazon/aws-cli:latest as aws
 
