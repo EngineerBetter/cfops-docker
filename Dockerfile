@@ -18,7 +18,7 @@ RUN mv /go/bin/gometalinter.v2 /go/bin/gometalinter && \
 
 FROM amazon/aws-cli:latest as aws
 
-FROM alpine:latest
+FROM python:3.7-alpine
 
 COPY --from=go /go/bin/ /usr/bin/
 
@@ -31,11 +31,8 @@ RUN apk --no-cache add \
   fd \
   git \
   parallel \
-  python3 \
-  python3-dev \
   ruby \
   ruby-dev \
-  && mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2 \
   && curl -sSL https://sdk.cloud.google.com | bash
 
 # Copy in binaries and make sure they are executable
