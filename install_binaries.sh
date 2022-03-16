@@ -2,7 +2,7 @@
 set -eux
 
 names=( terraform cf jq om fly bosh bbl yq credhub certstrap shellcheck)
-ls /usr/bin
+ldd certstrap
 for name in "${names[@]}"
 do
   chmod +x /usr/bin/$name
