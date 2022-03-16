@@ -30,6 +30,7 @@ RUN apk --no-cache add \
   curl \
   fd \
   git \
+  libc6-compat \
   parallel \
   ruby \
   ruby-dev \
