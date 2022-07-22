@@ -333,7 +333,7 @@ jobs:
     - get: certstrap-github-release
       trigger: true
       params:
-        globs: [certstrap-*-linux-amd64]
+        globs: [certstrap*linux-amd64]
     - get: kubectl-s3-release
       trigger: true
       passed: [get-kubectl]
@@ -379,7 +379,7 @@ jobs:
             cp bosh-cli-release/bosh-cli-*-linux-amd64 builddir/bosh
             cp bbl-github-release/bbl-v*_linux_x86-64 builddir/bbl
             cp yq-github-release/yq_linux_amd64 builddir/yq
-            cp certstrap-github-release/certstrap-*-linux-amd64 builddir/certstrap
+            cp certstrap-github-release/certstrap*linux-amd64 builddir/certstrap
             cp kubectl-s3-release/kubectl builddir/kubectl
             tar xJf shellcheck-release/shellcheck-v*.linux.x86_64.tar.xz
             mv shellcheck-*/shellcheck builddir/
