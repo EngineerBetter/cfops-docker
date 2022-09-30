@@ -43,6 +43,7 @@ RUN ./install_binaries.sh && rm install_binaries.sh
 
 # Adding the Google Cloud SDK package path to PATH
 ENV PATH $PATH:/root/google-cloud-sdk/bin
+RUN gcloud components install gke-gcloud-auth-plugin
 
 COPY verify_image.sh /tmp/verify_image.sh
 RUN /tmp/verify_image.sh && rm /tmp/verify_image.sh
