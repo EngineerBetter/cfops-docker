@@ -307,7 +307,7 @@ jobs:
     - get: om-github-release
       trigger: true
       params:
-        globs: [om-linux-*.tar.gz]
+        globs: [om-linux-amd64-*.tar.gz]
     - get: concourse-github-release
       trigger: true
       params:
@@ -373,7 +373,7 @@ jobs:
             cp terraform-s3-release/terraform builddir/terraform
             cp cf-cli-s3-release/cf builddir/cf
             cp jq-github-release/jq-linux64 builddir/jq
-            tar xzf om-github-release/om-linux-*.tar.gz -C builddir
+            tar xzf om-github-release/om-linux-amd64-*.tar.gz -C builddir
             tar xzf concourse-github-release/fly-*-linux-amd64.tgz -C builddir/
             tar xzf credhub-cli-github-release/credhub-linux-*.tgz -C builddir
             cp bosh-cli-release/bosh-cli-*-linux-amd64 builddir/bosh
