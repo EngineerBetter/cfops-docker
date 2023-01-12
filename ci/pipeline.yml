@@ -20,18 +20,24 @@ resources:
   type: registry-image
   icon: docker
   source:
+    username: ((dockerhub_user))
+    password: ((dockerhub_password))
     repository: alpine
 
 - name: go-image
   type: registry-image
   icon: docker
   source:
+    username: ((dockerhub_user))
+    password: ((dockerhub_password))
     repository: golang
 
 - name: aws-image
   type: registry-image
   icon: docker
   source:
+    username: ((dockerhub_user))
+    password: ((dockerhub_password))
     repository: amazon/aws-cli
 
 - name: terraform-github-release
