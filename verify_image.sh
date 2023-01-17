@@ -2,31 +2,29 @@
 
 set -eux
 
-command -v \
-  aws \
-  bbl \
-  bosh \
-  certstrap \
-  cf \
-  credhub \
-  fly \
-  gcloud \
-  ginkgo \
-  go \
-  gometalinter \
-  gpg \
-  jq \
-  om \
-  parallel \
-  python \
-  ruby \
-  shellcheck \
-  stopover \
-  stopover.v2 \
-  terraform \
-  uaac \
-  yaml-patch \
-  yaml2json \
-  yml2env \
-  yq \
-  bbr
+aws --version
+bbl --version
+bosh --version
+certstrap --version
+cf --version
+credhub --version
+fly --version
+gcloud --version
+ginkgo version
+go version
+gometalinter --version
+gpg --help
+jq --version
+om version
+parallel --version
+python version
+ruby --version
+shellcheck --version
+which stopover --version
+which stopover.v2 --version
+terraform --version
+uaac --version
+yaml-patch --help
+yaml2json -version
+which yml2env
+yq --version
