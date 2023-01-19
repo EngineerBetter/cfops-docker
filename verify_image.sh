@@ -20,8 +20,8 @@ parallel --version
 python --version
 ruby --version
 shellcheck --version
-which stopover --version
-which stopover.v2 --version
+which stopover
+which stopover.v2
 terraform --version
 uaac --version
 yaml-patch --help
