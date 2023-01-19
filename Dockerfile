@@ -67,6 +67,9 @@ COPY terraform cf jq om fly bosh bbl yq credhub certstrap kubectl shellcheck /us
 COPY install_binaries.sh .
 RUN ./install_binaries.sh && rm install_binaries.sh
 
+# Install UAAC
+RUN bash -l -c 'gem install --no-document --no-update-sources --verbose cf-uaac'
+
 # Adding the Google Cloud SDK package path to PATH
 ENV PATH $PATH:/root/google-cloud-sdk/bin
 RUN gcloud components install gke-gcloud-auth-plugin
