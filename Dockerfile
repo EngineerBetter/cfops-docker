@@ -43,7 +43,7 @@ FROM python:3.10.5-alpine3.16
 COPY --from=builder /usr/local/aws-cli/ /usr/local/aws-cli/
 COPY --from=builder /aws-cli-bin/ /usr/local/bin/
 COPY --from=go /go/bin/* /usr/bin/
-COPY --from=golang:1.19.5-alpine /usr/local/go/ /usr/local/go/
+COPY --from=golang:alpine /usr/local/go/ /usr/local/go/
 
 ENV PATH="/usr/local/go/bin:${PATH}"
 
@@ -54,6 +54,7 @@ RUN apk --no-cache add \
   fd \
   git \
   gnupg \
+  gcompat \
   libc6-compat \
   parallel \
   python3 \
@@ -61,6 +62,8 @@ RUN apk --no-cache add \
   ruby \
   ruby-dev \
   && curl -sSL https://sdk.cloud.google.com | bash
+
+RUN ln -s /lib/libc.so.6 /usr/lib/libresolv.so.2
 
 # Copy in binaries and make sure they are executable
 COPY terraform cf jq om fly bosh bbl yq credhub certstrap kubectl shellcheck /usr/bin/
